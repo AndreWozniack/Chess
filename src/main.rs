@@ -3,7 +3,7 @@ mod alpha_beta_whit_randomness;
 mod board;
 
 use crate::alfa_beta::alpha_beta;
-use crate::board::{ print_board, print_move};
+use crate::board::{print_board, print_move};
 use chess::{Board, ChessMove, Color, Square};
 use std::io::{self, Write};
 use std::time::{Duration, Instant};
@@ -11,7 +11,7 @@ use std::time::{Duration, Instant};
 fn main() {
     let mut board = Board::default();
     let mut current_color = Color::White;
-    let move_time_limit = Duration::from_secs(120); // 2 minutos para cada jogada
+    let move_time_limit = Duration::from_secs(120);
 
     loop {
         print_board(&board);
@@ -22,13 +22,10 @@ fn main() {
 
         let start_time = Instant::now();
         let next_move = if current_color == Color::White {
-
-            // Vez das Brancas (Humano)
-            println!("Vez das Brancas (Humano):");
+            println!("White p's turn:");
             get_player_move(&board)
         } else {
-            // Vez das Pretas (IA)
-            println!("Vez das Pretas (IA):");
+            println!("Black p's turn:");
             Some(alpha_beta(&board, 5))
         };
 
@@ -36,31 +33,31 @@ fn main() {
             Some(mov) => {
                 let elapsed_time = start_time.elapsed();
                 if elapsed_time > move_time_limit {
-                    println!("{:?} demorou muito para jogar e perdeu!", current_color);
+                    println!("{:?} took too long to play and lost!", current_color);
                     break;
                 }
                 print_move(&board, mov);
-                board = board.make_move_new(mov); // Faz a jogada.
-                current_color = !current_color; // Troca a cor do jogador.
+                board = board.make_move_new(mov);
+                current_color = !current_color;
                 println!("---------------------------------")
-            },
+            }
             None => {
-                println!("Nenhum movimento válido fornecido, tente novamente.");
+                println!("No valid movement provided, try again");
             }
         }
     }
 
-    println!("Final do jogo: {:?}", board.status());
+    println!("End of game: {:?}", board.status());
     if board.status() == chess::BoardStatus::Checkmate {
-        println!("{:?} venceu por xeque-mate!", !current_color);
+        println!("{:?} won by checkmate!", !current_color);
     } else if board.status() == chess::BoardStatus::Stalemate {
-        println!("O jogo terminou em empate por stalemate.");
+        println!("The match ended in a stalemate.");
     }
 }
 
 fn get_player_move(board: &Board) -> Option<ChessMove> {
     loop {
-        print!("Digite seu movimento (por exemplo, e2e4): ");
+        print!("Enter your move: ");
         io::stdout().flush().unwrap();
 
         let mut input = String::new();
@@ -75,11 +72,11 @@ fn get_player_move(board: &Board) -> Option<ChessMove> {
                 if board.legal(chess_move) {
                     return Some(chess_move);
                 } else {
-                    println!("Movimento ilegal! Tente novamente.");
+                    println!("Invalid move! Try again.");
                 }
             }
         } else {
-            println!("Entrada inválida! Use o formato de movimento como e2e4.");
+            println!("Invalid move! Try again.");
         }
     }
 }

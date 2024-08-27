@@ -6,7 +6,8 @@ pub fn print_board(board: &Board) {
     for rank in (0..8).rev() {
         print!("{} | ", rank + 1);
         for file in 0..8 {
-            let square = Square::make_square(chess::Rank::from_index(rank), chess::File::from_index(file));
+            let square =
+                Square::make_square(chess::Rank::from_index(rank), chess::File::from_index(file));
             if let Some(piece) = board.piece_on(square) {
                 let piece_char = match piece {
                     Piece::Pawn => 'P',

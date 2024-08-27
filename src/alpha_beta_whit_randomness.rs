@@ -13,20 +13,17 @@ pub fn alpha_beta_with_randomness(board: &Board, depth: usize) -> ChessMove {
         let mut new_board = board.make_move_new(mov);
         let value = min(&new_board, alpha, beta, depth - 1);
         if value > best_value {
-            best_moves.clear(); // Limpa a lista se um melhor movimento é encontrado
+            best_moves.clear();
             best_moves.push(mov);
             best_value = value;
         } else if value == best_value {
-            best_moves.push(mov); // Adiciona à lista se o movimento é tão bom quanto o melhor
+            best_moves.push(mov);
         }
     }
 
-    // Escolha um movimento aleatoriamente dos melhores movimentos
     let mut rng = thread_rng();
     best_moves
         .choose(&mut rng)
         .expect("No legal moves available")
         .clone()
 }
-
-// As funções `max_value` e `min_value` seriam adaptadas para trabalhar com essa lógica
