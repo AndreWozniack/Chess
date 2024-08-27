@@ -2,13 +2,13 @@ use crate::board::{evaluate_board, is_terminal};
 use chess::{Board, ChessMove, MoveGen};
 
 pub fn alpha_beta(board: &Board, depth: usize) -> ChessMove {
-    let mut alpha = i32::MIN;
-    let mut beta = i32::MAX;
+    let alpha = i32::MIN;
+    let beta = i32::MAX;
     let mut best_move = None;
     let mut best_value = i32::MIN;
 
     for mov in MoveGen::new_legal(board) {
-        let mut new_board = board.make_move_new(mov);
+        let new_board = board.make_move_new(mov);
         let value = min(&new_board, alpha, beta, depth - 1);
         if value > best_value {
             best_value = value;
